@@ -1,6 +1,11 @@
 import './style.css'
 
-const GOOGLE_SCRIPT_URL = String(import.meta.env.VITE_GOOGLE_SCRIPT_URL ?? '').trim();
+const normalizeEnvUrl = (value: unknown) => {
+    const raw = String(value ?? '').trim();
+    return raw.replace(/^['\"]|['\"]$/g, '').trim();
+};
+
+const GOOGLE_SCRIPT_URL = normalizeEnvUrl(import.meta.env.VITE_GOOGLE_SCRIPT_URL);
 
 // --- Contagem Regressiva ---
 const weddingDate = new Date('June 6, 2026 16:00:00').getTime();
@@ -278,7 +283,12 @@ if (rsvpForm) {
             clearFormStatus();
         } catch (error) {
             console.error('Falha ao enviar para Google Sheets:', error);
-            updateFormStatus('Não conseguimos enviar para a planilha. Verifique a URL no arquivo .env e o deploy do Apps Script.', 'error');
+            const isMissingUrl = !GOOGLE_SCRIPT_URL;
+            const errorMessage = isMissingUrl
+                ? 'Integração não configurada no deploy. Defina VITE_GOOGLE_SCRIPT_URL no Netlify e publique novamente.'
+                : 'Não conseguimos enviar para a planilha. Verifique o deploy do Apps Script e se a URL está sem aspas.';
+
+            updateFormStatus(errorMessage, 'error');
 
             if (submitBtn) {
                 submitBtn.disabled = false;
