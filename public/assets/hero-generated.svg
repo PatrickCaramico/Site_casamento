@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Fundo romantico para casamento</title>
+  <desc id="desc">Arte em tons claros com gradientes, luz suave e detalhes florais em dourado.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8f3ed"/>
+      <stop offset="45%" stop-color="#efe4d8"/>
+      <stop offset="100%" stop-color="#f9f6f2"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0.7" cy="0.25" r="0.6">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d8c09d"/>
+      <stop offset="100%" stop-color="#c8ab81"/>
+    </linearGradient>
+    <filter id="blurSoft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <ellipse cx="1360" cy="220" rx="520" ry="260" fill="url(#light)"/>
+
+  <g opacity="0.3" filter="url(#blurSoft)">
+    <circle cx="350" cy="860" r="220" fill="#ffffff"/>
+    <circle cx="1700" cy="120" r="170" fill="#fffaf2"/>
+    <circle cx="1520" cy="760" r="210" fill="#f1e6d7"/>
+  </g>
+
+  <g fill="none" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.78">
+    <path d="M1460 180c-78 58-132 126-149 212"/>
+    <path d="M1311 392c-11 49-16 108-7 164"/>
+    <path d="M1314 396c-42-15-89-40-120-82"/>
+    <path d="M1361 302c42-5 95-27 142-78"/>
+    <path d="M1384 232c-31 22-51 47-61 80"/>
+    <path d="M1272 494c-34 11-75 35-107 79"/>
+
+    <ellipse cx="1378" cy="286" rx="17" ry="27" transform="rotate(-28 1378 286)"/>
+    <ellipse cx="1336" cy="350" rx="16" ry="24" transform="rotate(-8 1336 350)"/>
+    <ellipse cx="1291" cy="417" rx="15" ry="21" transform="rotate(18 1291 417)"/>
+    <ellipse cx="1248" cy="479" rx="14" ry="20" transform="rotate(30 1248 479)"/>
+    <ellipse cx="1461" cy="243" rx="15" ry="23" transform="rotate(32 1461 243)"/>
+    <ellipse cx="1420" cy="298" rx="16" ry="24" transform="rotate(17 1420 298)"/>
+
+    <circle cx="1302" cy="559" r="9"/>
+    <circle cx="1332" cy="594" r="8"/>
+    <circle cx="1360" cy="626" r="7"/>
+  </g>
+
+  <g fill="none" stroke="url(#gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.58">
+    <path d="M250 690c91-45 174-97 250-194"/>
+    <path d="M500 496c39-53 66-120 70-182"/>
+    <ellipse cx="474" cy="545" rx="15" ry="24" transform="rotate(-36 474 545)"/>
+    <ellipse cx="430" cy="592" rx="14" ry="20" transform="rotate(-22 430 592)"/>
+    <ellipse cx="381" cy="634" rx="13" ry="18" transform="rotate(-6 381 634)"/>
+    <circle cx="544" cy="436" r="7"/>
+    <circle cx="568" cy="395" r="6"/>
+  </g>
+</svg>

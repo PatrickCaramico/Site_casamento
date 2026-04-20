@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patrick & Lara - Nosso Casamento</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <nav class="nav-container">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-list" id="nav-list">
+          <li><a href="#home">HOME</a></li>
+          <li><a href="#cerimonia">CERIMÔNIA</a></li>
+          <li><a href="#recepcao">RECEPÇÃO</a></li>
+          <li><a href="#confirmacao">CONFIRME SUA PRESENÇA</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <div class="hero-bg-container" aria-hidden="true">
+          <img
+            src="/public/assets/Imagem_design.png"
+            class="hero-img-bg"
+            alt=""
+          />
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content reveal">
+          <div class="hero-frame">
+            <p class="subtitle fade-in">Guarde a Data</p>
+            <h1 class="couple-names">
+              <span class="name fade-up delay-1">Patrick</span>
+              <span class="ampersand fade-up delay-2">+</span>
+              <span class="name fade-up delay-3">Lara</span>
+            </h1>
+            <p class="date slide-up delay-3">06 . 06 . 2026</p>
+          </div>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+      </section>
+
+      <!-- Countdown Section -->
+      <section id="countdown" class="countdown-section">
+        <h2 class="section-title">Contagem Regressiva</h2>
+        <div class="timer" id="timer">
+          <div class="timer-block">
+            <span id="days">00</span>
+            <label>DIAS</label>
+          </div>
+          <div class="timer-block">
+            <span id="hours">00</span>
+            <label>HORAS</label>
+          </div>
+          <div class="timer-block">
+            <span id="minutes">00</span>
+            <label>MINUTOS</label>
+          </div>
+          <div class="timer-block">
+            <span id="seconds">00</span>
+            <label>SEGUNDOS</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ceremony Section -->
+      <section id="cerimonia" class="details-section">
+        <div class="container">
+          <h2 class="section-title">Cerimônia Religiosa</h2>
+          <div
+            class="ceremony-photo-frame"
+            aria-label="Foto da igreja da cerimônia"
+          >
+            <img
+              src="/assets/Igreja.png"
+              alt="Foto da igreja onde acontecerá a cerimônia"
+              class="ceremony-photo"
+            />
+          </div>
+          <div class="info-card">
+            <h3>Paróquia Nossa Senhora Aparecida</h3>
+            <p class="sub-info">Vila Zatt</p>
+            <p class="address">
+              Praça Vinte e Cinco de Novembro, 53 - Vila Zat, São Paulo - SP,
+              02977-000
+            </p>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Paróquia+Nossa+Senhora+Aparecida+Vila+Zatt"
+              target="_blank"
+              class="btn-outline"
+              >Ver no Mapa</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Reception Section -->
+      <section id="recepcao" class="details-section bg-alt">
+        <div class="container">
+          <div class="reception-header">
+            <h2 class="section-title">Comemoração</h2>
+            <div class="reception-divider"></div>
+          </div>
+          <div class="reception-card">
+            <div class="reception-overlay"></div>
+            <div class="reception-content">
+              <p>
+                Após a cerimônia religiosa, brindaremos a nossa união em um
+                momento especial.
+              </p>
+              <div class="restaurant-info">
+                <p class="restaurant-name">
+                  <strong
+                    >Restaurante da Fazenda Express - Cantareira Norte
+                    Shopping</strong
+                  >
+                </p>
+                <p class="restaurant-address">
+                  Av. Raimundo Pereira de Magalhães, 11001 - Jardim Pirituba,
+                  São Paulo - SP, 02984-035
+                </p>
+                <p class="restaurant-time">
+                  Horário da chegada: após a cerimônia
+                </p>
+              </div>
+              <div class="restaurant-links">
+                <a
+                  href="https://www.google.com/maps/place/restaurante+da+fazenda+cantareira/data=!4m2!3m1!1s0x94cefb006ce5071d:0xdec2984d2d7b76a2?sa=X&ved=1t:242&ictx=111"
+                  target="_blank"
+                  class="btn-calendar"
+                >
+                  Ver no Maps
+                </a>
+                <a
+                  href="https://www.instagram.com/restaurantedafazendaexpress/"
+                  target="_blank"
+                  class="btn-calendar"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Casamento+Patrick+%26+Lara&dates=20260606T190000Z/20260606T220000Z&details=Celebração+do+casamento+de+Patrick+e+Lara&location=Paróquia+Nossa+Senhora+Aparecida+-+Vila+Zatt"
+                  target="_blank"
+                  class="btn-calendar"
+                >
+                  Adicionar à minha Agenda
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RSVP Section -->
+      <section id="confirmacao" class="rsvp-section">
+        <div class="container">
+          <div class="rsvp-card">
+            <h2 class="section-title">Confirme sua Presença</h2>
+            <p class="rsvp-intro">
+              Para garantirmos a melhor organização da nossa
+              <strong>cerimônia</strong> e reserva no
+              <strong>restaurante</strong>, sua confirmação é essencial.
+            </p>
+            <p class="rsvp-note">
+              Pedimos a gentileza de confirmar até o dia 30 de Maio de 2026.
+            </p>
+
+            <form id="rsvp-form" class="rsvp-form-premium">
+              <div class="form-group-premium">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder=" "
+                  required
+                />
+                <label for="name">Seu Nome Completo</label>
+              </div>
+
+              <div class="form-group-premium">
+                <p class="field-label">Você irá na cerimônia?</p>
+                <select
+                  id="ceremonyAttendance"
+                  name="ceremonyAttendance"
+                  required
+                >
+                  <option value="" selected disabled>
+                    Selecione uma opção
+                  </option>
+                  <option value="sim">Sim, estarei lá!</option>
+                  <option value="talvez">Talvez, não tenho certeza</option>
+                  <option value="nao">Infelizmente não</option>
+                </select>
+              </div>
+
+              <div class="form-group-premium">
+                <p class="field-label">Você irá no restaurante?</p>
+                <select
+                  id="restaurantAttendance"
+                  name="restaurantAttendance"
+                  required
+                >
+                  <option value="" selected disabled>
+                    Selecione uma opção
+                  </option>
+                  <option value="sim">Sim, estarei lá!</option>
+                  <option value="talvez">Talvez, não tenho certeza</option>
+                  <option value="nao">Infelizmente não</option>
+                </select>
+              </div>
+
+              <div class="guest-count-group">
+                <div class="quantity-selector-row">
+                  <p class="quantity-label">
+                    Quantidade de adultos incluindo você
+                  </p>
+                  <select
+                    id="adultsCount"
+                    name="adultsCount"
+                    class="quantity-select"
+                    required
+                  >
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+                <div
+                  id="adult-companions-container"
+                  class="dynamic-names hidden"
+                ></div>
+              </div>
+
+              <div class="guest-count-group">
+                <div class="quantity-selector-row">
+                  <p class="quantity-label">Quantidade de crianças</p>
+                  <select
+                    id="childrenCount"
+                    name="childrenCount"
+                    class="quantity-select"
+                    required
+                  >
+                    <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+                <div
+                  id="children-names-container"
+                  class="dynamic-names hidden"
+                ></div>
+              </div>
+
+              <div class="form-group-premium">
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder=" "
+                ></textarea>
+                <label for="message"
+                  >Deixe uma mensagem para os noivos (Opcional)</label
+                >
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-primary-premium">
+                  Confirmar Presença
+                </button>
+                <button type="reset" class="btn-secondary-premium">
+                  Limpar Formulário
+                </button>
+              </div>
+              <p id="form-status" class="form-status hidden" role="status"></p>
+            </form>
+
+            <div id="form-feedback" class="form-feedback-premium hidden">
+              <div class="feedback-success">
+                <span class="success-icon">✨</span>
+                <p id="feedback-message">
+                  Obrigado! Sua confirmação foi enviada com sucesso.
+                </p>
+                <button
+                  type="button"
+                  id="new-response"
+                  class="btn-secondary-premium"
+                >
+                  Enviar nova resposta
+                </button>
+                <a
+                  href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Casamento+Patrick+%26+Lara&dates=20260606T190000Z/20260606T220000Z&details=Celebração+do+casamento+de+Patrick+e+Lara&location=Paróquia+Nossa+Senhora+Aparecida+-+Vila+Zatt"
+                  target="_blank"
+                  class="btn-calendar"
+                  >Salvar na minha Agenda</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Patrick & Lara &copy; 2026</p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
