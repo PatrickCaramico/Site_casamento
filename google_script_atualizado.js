@@ -100,9 +100,17 @@ function doGet(e) {
     // Ignora a primeira linha (cabeçalho)
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
-      const giftId = row[1]; // A coluna 1 é o ID do Produto
+      const giftId = row[1];           // Coluna 1: ID do Produto
+      const giftName = row[2];         // Coluna 2: Nome do Produto
+      const guestName = row[3];        // Coluna 3: Convidado
+      
+      // Somente adiciona se houver ID (presente foi realmente reservado)
       if (giftId) {
-        reservedGifts.push(giftId);
+        reservedGifts.push({
+          id: giftId,
+          name: giftName || "Sem nome",
+          reserved_by: guestName || "Não informado"
+        });
       }
     }
 

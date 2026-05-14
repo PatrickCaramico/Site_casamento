@@ -368,6 +368,12 @@ type Gift = {
   image: string;
 };
 
+type ReservedGift = {
+  id: string;
+  name: string;
+  reserved_by: string;
+};
+
 const giftsData: Gift[] = [
   { id: 'g1', name: 'Kit potes de mantimentos', price: 120.0, image: 'https://images.unsplash.com/photo-1590502593747-42a996111153?q=80&w=600&auto=format&fit=crop' },
   { id: 'g2', name: 'Edredom casal', price: 350.0, image: 'https://images.unsplash.com/photo-1522771731478-44bf10511851?q=80&w=600&auto=format&fit=crop' },
@@ -382,7 +388,7 @@ const giftsData: Gift[] = [
   { id: 'g12', name: 'Travessas de Vidro/Cerâmica', price: 130.0, image: 'https://images.unsplash.com/photo-1581622558667-3419a8dc5f83?q=80&w=600&auto=format&fit=crop' },
 ];
 
-let reservedGifts: string[] = [];
+let reservedGifts: ReservedGift[] = [];
 
 const renderGifts = () => {
   if (!giftsGrid) return;
@@ -399,13 +405,20 @@ const renderGifts = () => {
   });
 
   sortedGifts.forEach((gift) => {
-    const isReserved = reservedGifts.includes(gift.id);
+    // Verifica se o presente está reservado procurando pelo ID
+    const reservedItem = reservedGifts.find(r => r.id === gift.id);
+    const isReserved = !!reservedItem;
     
     const card = document.createElement('div');
     card.className = `gift-list-item ${isReserved ? 'unavailable' : ''}`;
     
+    // Se o presente está reservado, mostra quem reservou
+    const reservedByText = isReserved && reservedItem?.reserved_by 
+      ? ` • Reservado por: ${reservedItem.reserved_by}` 
+      : '';
+    
     card.innerHTML = `
-      <span class="gift-list-name">${gift.name}</span>
+      <span class="gift-list-name">${gift.name}${reservedByText}</span>
       <button class="btn-gift-list ${isReserved ? 'unavailable' : ''}" 
         data-id="${gift.id}" 
         data-name="${gift.name}"
@@ -443,11 +456,12 @@ const fetchReservedGifts = async () => {
     const response = await fetch(GOOGLE_SCRIPT_URL);
     const data = await response.json();
     if (data && data.reserved) {
+      // A API agora retorna um array de objetos: {id, name, reserved_by}
       reservedGifts = data.reserved;
     }
     if (cartStatus) {
       cartStatus.innerText = reservedGifts.length > 0 
-        ? `${reservedGifts.length} presentes reservados` 
+        ? `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}` 
         : "Nenhum presente reservado ainda";
     }
   } catch (err) {
