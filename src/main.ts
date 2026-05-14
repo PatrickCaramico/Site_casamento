@@ -542,6 +542,12 @@ if (giftForm) {
           },
           body: JSON.stringify({ action: 'reserveGift', giftId, giftName, guestName })
         });
+        
+        // Aguarda um pouco para o Google Sheets processar a inserção
+        await new Promise(r => setTimeout(r, 1500));
+        
+        // Recarrega os presentes reservados do Google Sheets
+        await fetchReservedGifts();
       } else {
         // Modo demo: adiciona o presente com os dados completos
         const demoReserved: ReservedGift = {
@@ -551,14 +557,14 @@ if (giftForm) {
         };
         reservedGifts.push(demoReserved);
         localStorage.setItem('demo_reserved_gifts', JSON.stringify(reservedGifts));
-        await new Promise(r => setTimeout(r, 800)); 
+        await new Promise(r => setTimeout(r, 800));
+        renderGifts();
       }
       
       if (cartStatus && reservedGifts.length > 0) {
         cartStatus.innerText = `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}`;
       }
 
-      renderGifts();
       closeGiftModal();
       alert(`Muito obrigado, ${guestName}! O presente "${giftName}" foi reservado.`);
 
