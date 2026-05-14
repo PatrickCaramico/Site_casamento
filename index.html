@@ -128,17 +128,20 @@
               </p>
               <div class="restaurant-info">
                 <p class="restaurant-name">
-                  <strong
-                    >Restaurante da Fazenda - Casa verde</strong
-                  >
+                  <strong>Restaurante da Fazenda - Casa verde</strong>
                 </p>
                 <p class="restaurant-address">
-                  Av. Eng. Caetano Álvares, 1000 - Limão, São Paulo - SP, 02553-044
+                  Av. Eng. Caetano Álvares, 1000 - Limão, São Paulo - SP,
+                  02553-044
                 </p>
                 <p class="restaurant-time">
                   Horário da chegada: após a cerimônia
                 </p>
               </div>
+              <p class="restaurant-note">
+                Lembrete: Informamos que a adesão será individual, com o custo
+                pago diretamente ao restaurante.
+              </p>
               <div class="restaurant-links">
                 <a
                   href="https://www.google.com/maps/place/Restaurante+da+Fazenda/@-23.5053852,-46.6707891,17z/data=!3m2!4b1!5s0x94cef7f5ac72b36f:0xac2fc9f44fdebcdd!4m6!3m5!1s0x94cef76f27e166df:0xd8dad5449fbd4220!8m2!3d-23.5053901!4d-46.6682142!16s%2Fg%2F11rx1lw_t4?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D"
@@ -171,14 +174,32 @@
       <section id="presentes" class="gifts-section">
         <div class="container">
           <div class="gifts-header">
-            <h2 class="section-title" style="margin-bottom: 1rem;">Lista de Presentes</h2>
+            <h2 class="section-title" style="margin-bottom: 1rem">
+              Lista de Presentes
+            </h2>
             <p class="gifts-intro">
-              Nossa maior alegria é ter você celebrando conosco. Caso queira nos presentear, preparamos uma lista de sugestões.
+              Nossa maior alegria é ter você celebrando conosco. Caso queira nos
+              presentear, preparamos uma lista de sugestões.
             </p>
-            
+
             <div class="gifts-toolbar">
               <div class="cart-indicator">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
+                </svg>
                 <span id="gifts-cart-status">Carregando lista...</span>
               </div>
               <div class="sort-indicator">
@@ -192,7 +213,7 @@
               </div>
             </div>
           </div>
-          
+
           <div id="gifts-grid" class="gifts-grid">
             <!-- Gifts will be rendered here by main.ts -->
           </div>
@@ -201,14 +222,23 @@
         <!-- Gift Reservation Modal -->
         <div id="gift-modal" class="gift-modal hidden">
           <div class="gift-modal-content">
-            <button id="close-modal" class="close-modal" aria-label="Fechar">&times;</button>
+            <button id="close-modal" class="close-modal" aria-label="Fechar">
+              &times;
+            </button>
             <h3 class="modal-title">Confirmar Presente</h3>
             <p id="modal-gift-name" class="modal-gift-name"></p>
-            <p class="modal-intro">Por favor, informe seu nome para reservarmos este presente na nossa lista.</p>
-            
-            <form id="gift-form" class="rsvp-form-premium" style="gap: 1.5rem; margin-top: 2rem;">
-              <input type="hidden" id="modal-gift-id" name="giftId" value="">
-              
+            <p class="modal-intro">
+              Por favor, informe seu nome para reservarmos este presente na
+              nossa lista.
+            </p>
+
+            <form
+              id="gift-form"
+              class="rsvp-form-premium"
+              style="gap: 1.5rem; margin-top: 2rem"
+            >
+              <input type="hidden" id="modal-gift-id" name="giftId" value="" />
+
               <div class="form-group-premium">
                 <input
                   type="text"
@@ -219,11 +249,20 @@
                 />
                 <label for="guestName">Seu Nome Completo</label>
               </div>
-              
-              <button type="submit" id="submit-gift-btn" class="btn-primary-premium btn-gift-submit" style="margin-top: 1rem; width: 100%;">
+
+              <button
+                type="submit"
+                id="submit-gift-btn"
+                class="btn-primary-premium btn-gift-submit"
+                style="margin-top: 1rem; width: 100%"
+              >
                 Confirmar Presente
               </button>
-              <p id="gift-form-status" class="form-status hidden" role="status"></p>
+              <p
+                id="gift-form-status"
+                class="form-status hidden"
+                role="status"
+              ></p>
             </form>
           </div>
         </div>

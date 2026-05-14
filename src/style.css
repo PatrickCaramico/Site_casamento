@@ -465,6 +465,13 @@ section {
   line-height: 1.35;
 }
 
+.restaurant-note {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  color: #6b6b6b;
+  font-style: italic;
+}
+
 .restaurant-info p:last-child {
   margin-bottom: 0;
 }
