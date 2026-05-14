@@ -43,12 +43,33 @@ function doPost(e) {
 
   try {
     // Se for uma requisição de reserva de presente
+    // Segurança: só grava se o corpo do POST (e.postData.contents) estiver presente
     if (e.parameter && e.parameter.action === 'reserveGift') {
+      // Se veio pelo corpo do POST, preferimos parsear o JSON
+      let payload = null;
+      if (e.postData && e.postData.contents) {
+        try {
+          payload = JSON.parse(e.postData.contents);
+        } catch (err) {
+          // fallback para usar e.parameter
+          payload = e.parameter;
+        }
+      } else {
+        // Sem corpo de POST — rejeitamos para evitar gravações indevidas
+        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": "POST body missing; reservation not recorded." }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
       const sheet = ss.getSheetByName(GIFTS_SHEET_NAME);
       const timestamp = new Date();
-      const giftId = e.parameter.giftId || "";
-      const giftName = e.parameter.giftName || "";
-      const guestName = e.parameter.guestName || "";
+      const giftId = (payload && payload.giftId) ? payload.giftId : "";
+      const giftName = (payload && payload.giftName) ? payload.giftName : "";
+      const guestName = (payload && payload.guestName) ? payload.guestName : "";
+
+      if (!giftId) {
+        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": "giftId missing; reservation not recorded." }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
 
       sheet.appendRow([timestamp, giftId, giftName, guestName]);
 
