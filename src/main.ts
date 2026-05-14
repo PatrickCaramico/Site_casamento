@@ -384,10 +384,6 @@ const giftsData: Gift[] = [
 
 let reservedGifts: string[] = [];
 
-const formatPrice = (price: number) => {
-  return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-};
-
 const renderGifts = () => {
   if (!giftsGrid) return;
 
