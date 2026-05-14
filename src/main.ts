@@ -543,17 +543,19 @@ if (giftForm) {
           body: JSON.stringify({ action: 'reserveGift', giftId, giftName, guestName })
         });
       } else {
-        reservedGifts.push(giftId);
+        // Modo demo: adiciona o presente com os dados completos
+        const demoReserved: ReservedGift = {
+          id: giftId,
+          name: giftName,
+          reserved_by: guestName
+        };
+        reservedGifts.push(demoReserved);
         localStorage.setItem('demo_reserved_gifts', JSON.stringify(reservedGifts));
         await new Promise(r => setTimeout(r, 800)); 
       }
-
-      if (!reservedGifts.includes(giftId)) {
-        reservedGifts.push(giftId);
-      }
       
       if (cartStatus && reservedGifts.length > 0) {
-        cartStatus.innerText = `${reservedGifts.length} presentes reservados`;
+        cartStatus.innerText = `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}`;
       }
 
       renderGifts();
