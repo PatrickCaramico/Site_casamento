@@ -347,3 +347,223 @@ window.addEventListener('scroll', () => {
         }
     }
 });
+
+// --- Gifts Logic ---
+const giftsGrid = document.getElementById('gifts-grid');
+const sortSelect = document.getElementById('sort-gifts') as HTMLSelectElement | null;
+const cartStatus = document.getElementById('gifts-cart-status');
+
+const giftModal = document.getElementById('gift-modal');
+const closeModalBtn = document.getElementById('close-modal');
+const giftForm = document.getElementById('gift-form') as HTMLFormElement | null;
+const modalGiftName = document.getElementById('modal-gift-name');
+const modalGiftId = document.getElementById('modal-gift-id') as HTMLInputElement | null;
+const giftFormStatus = document.getElementById('gift-form-status') as HTMLParagraphElement | null;
+const submitGiftBtn = document.getElementById('submit-gift-btn') as HTMLButtonElement | null;
+
+type Gift = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+};
+
+const giftsData: Gift[] = [
+  { id: 'g1', name: 'Kit potes de mantimentos', price: 120.0, image: 'https://images.unsplash.com/photo-1590502593747-42a996111153?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g2', name: 'Edredom casal', price: 350.0, image: 'https://images.unsplash.com/photo-1522771731478-44bf10511851?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g4', name: 'Jogo de lençóis de casal', price: 180.0, image: 'https://images.unsplash.com/photo-1618220179428-22790b46a0eb?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g5', name: 'Jogo de Copos de vidro', price: 90.0, image: 'https://images.unsplash.com/photo-1610444391696-6b2df15cb726?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g6', name: 'Jogo de pratos de vidro', price: 140.0, image: 'https://images.unsplash.com/photo-1603199506016-b9a594b59cb6?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g7', name: 'Faqueiro ou jogo de talheres', price: 250.0, image: 'https://images.unsplash.com/photo-1594248881335-b28ce3a00f2e?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g8', name: 'Chaleira elétrica', price: 160.0, image: 'https://images.unsplash.com/photo-1594488582236-419b4b0eec82?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g9', name: 'Aspirador de pó', price: 400.0, image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g10', name: 'Sanduicheira', price: 110.0, image: 'https://images.unsplash.com/photo-1536411964265-21d37e6f8510?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g11', name: 'Mixer ou processador', price: 220.0, image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g12', name: 'Travessas de Vidro/Cerâmica', price: 130.0, image: 'https://images.unsplash.com/photo-1581622558667-3419a8dc5f83?q=80&w=600&auto=format&fit=crop' },
+];
+
+let reservedGifts: string[] = [];
+
+const formatPrice = (price: number) => {
+  return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+};
+
+const renderGifts = () => {
+  if (!giftsGrid) return;
+
+  giftsGrid.innerHTML = '';
+  
+  const sortValue = sortSelect?.value || 'az';
+  const sortedGifts = [...giftsData].sort((a, b) => {
+    if (sortValue === 'az') return a.name.localeCompare(b.name);
+    if (sortValue === 'za') return b.name.localeCompare(a.name);
+    if (sortValue === 'price-asc') return a.price - b.price;
+    if (sortValue === 'price-desc') return b.price - a.price;
+    return 0;
+  });
+
+  sortedGifts.forEach((gift) => {
+    const isReserved = reservedGifts.includes(gift.id);
+    
+    const card = document.createElement('div');
+    card.className = `gift-list-item ${isReserved ? 'unavailable' : ''}`;
+    
+    card.innerHTML = `
+      <span class="gift-list-name">${gift.name}</span>
+      <button class="btn-gift-list ${isReserved ? 'unavailable' : ''}" 
+        data-id="${gift.id}" 
+        data-name="${gift.name}"
+        ${isReserved ? 'disabled' : ''}>
+        ${isReserved ? 'Indisponível' : 'Presentear'}
+      </button>
+    `;
+    
+    giftsGrid.appendChild(card);
+  });
+
+  const giftButtons = giftsGrid.querySelectorAll('.btn-gift-list:not(:disabled)');
+  giftButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = e.target as HTMLButtonElement;
+      const giftId = target.getAttribute('data-id');
+      const giftName = target.getAttribute('data-name');
+      openGiftModal(giftId, giftName);
+    });
+  });
+};
+
+const fetchReservedGifts = async () => {
+  if (!GOOGLE_SCRIPT_URL) {
+    if (cartStatus) cartStatus.innerText = "Modo demonstração";
+    const localReserved = localStorage.getItem('demo_reserved_gifts');
+    if (localReserved) {
+      reservedGifts = JSON.parse(localReserved);
+    }
+    renderGifts();
+    return;
+  }
+
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL);
+    const data = await response.json();
+    if (data && data.reserved) {
+      reservedGifts = data.reserved;
+    }
+    if (cartStatus) {
+      cartStatus.innerText = reservedGifts.length > 0 
+        ? `${reservedGifts.length} presentes reservados` 
+        : "Nenhum presente reservado ainda";
+    }
+  } catch (err) {
+    console.error("Erro ao buscar presentes:", err);
+    if (cartStatus) cartStatus.innerText = "Pronto para receber reservas";
+  } finally {
+    renderGifts();
+  }
+};
+
+const openGiftModal = (id: string | null, name: string | null) => {
+  if (!id || !name || !giftModal || !modalGiftName || !modalGiftId) return;
+  
+  modalGiftId.value = id;
+  modalGiftName.innerText = name;
+  giftModal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden'; 
+  
+  if (giftFormStatus) {
+    giftFormStatus.classList.add('hidden');
+    giftFormStatus.innerText = '';
+  }
+};
+
+const closeGiftModal = () => {
+  if (!giftModal) return;
+  giftModal.classList.add('hidden');
+  document.body.style.overflow = '';
+  giftForm?.reset();
+};
+
+if (closeModalBtn) {
+  closeModalBtn.addEventListener('click', closeGiftModal);
+}
+
+if (sortSelect) {
+  sortSelect.addEventListener('change', renderGifts);
+}
+
+if (giftForm) {
+  giftForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(giftForm);
+    const guestName = String(formData.get('guestName') ?? '').trim();
+    const giftId = String(formData.get('giftId') ?? '');
+    const giftName = modalGiftName?.innerText || '';
+    
+    if (!guestName || !giftId) return;
+
+    if (submitGiftBtn) {
+      submitGiftBtn.disabled = true;
+      submitGiftBtn.innerText = 'Reservando...';
+    }
+    
+    if (giftFormStatus) {
+      giftFormStatus.classList.remove('hidden', 'error');
+      giftFormStatus.classList.add('pending');
+      giftFormStatus.innerText = 'Enviando sua reserva...';
+    }
+
+    try {
+      if (GOOGLE_SCRIPT_URL) {
+        const params = new URLSearchParams({
+          action: 'reserveGift',
+          giftId,
+          giftName,
+          guestName
+        });
+        
+        const requestUrl = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
+        
+        await fetch(requestUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=UTF-8',
+          },
+          body: JSON.stringify({ action: 'reserveGift', giftId, giftName, guestName })
+        });
+      } else {
+        reservedGifts.push(giftId);
+        localStorage.setItem('demo_reserved_gifts', JSON.stringify(reservedGifts));
+        await new Promise(r => setTimeout(r, 800)); 
+      }
+
+      if (!reservedGifts.includes(giftId)) {
+        reservedGifts.push(giftId);
+      }
+      
+      if (cartStatus && reservedGifts.length > 0) {
+        cartStatus.innerText = `${reservedGifts.length} presentes reservados`;
+      }
+
+      renderGifts();
+      closeGiftModal();
+      alert(`Muito obrigado, ${guestName}! O presente "${giftName}" foi reservado.`);
+
+    } catch (err) {
+      console.error('Falha ao reservar presente:', err);
+      if (giftFormStatus) {
+        giftFormStatus.classList.remove('pending');
+        giftFormStatus.classList.add('error');
+        giftFormStatus.innerText = 'Erro ao conectar. Tente novamente.';
+      }
+    } finally {
+      if (submitGiftBtn) {
+        submitGiftBtn.disabled = false;
+        submitGiftBtn.innerText = 'Confirmar Presente';
+      }
+    }
+  });
+}
+
+fetchReservedGifts();
