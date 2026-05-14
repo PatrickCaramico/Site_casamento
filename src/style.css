@@ -421,7 +421,11 @@ section {
   align-items: center;
   justify-content: center;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
+}
+
+#recepcao.details-section {
+  padding-bottom: 5rem;
 }
 
 .reception-overlay {
@@ -776,7 +780,7 @@ section {
 
 /* Gifts Section */
 .gifts-section {
-  padding: 8rem 1rem;
+  padding: 5rem 1rem 8rem;
   background-color: var(--bg-primary);
 }
 
