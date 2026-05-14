@@ -42,29 +42,33 @@ function doPost(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
   try {
-    // Se for uma requisição de reserva de presente
-    // Segurança: só grava se o corpo do POST (e.postData.contents) estiver presente
-    if (e.parameter && e.parameter.action === 'reserveGift') {
-      // Se veio pelo corpo do POST, preferimos parsear o JSON
-      let payload = null;
-      if (e.postData && e.postData.contents) {
-        try {
-          payload = JSON.parse(e.postData.contents);
-        } catch (err) {
-          // fallback para usar e.parameter
-          payload = e.parameter;
-        }
-      } else {
-        // Sem corpo de POST — rejeitamos para evitar gravações indevidas
-        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": "POST body missing; reservation not recorded." }))
-          .setMimeType(ContentService.MimeType.JSON);
-      }
+    let payload = {};
 
+    // Tenta parsear o corpo da requisição (JSON)
+    if (e.postData && e.postData.contents) {
+      try {
+        payload = JSON.parse(e.postData.contents);
+      } catch (err) {
+        // Ignora erro de parse
+      }
+    }
+
+    // Mescla e.parameter com payload para garantir que temos todos os dados
+    if (e.parameter) {
+      for (let key in e.parameter) {
+        if (!payload[key]) {
+          payload[key] = e.parameter[key];
+        }
+      }
+    }
+
+    // Se for uma requisição de reserva de presente
+    if (payload.action === 'reserveGift') {
       const sheet = ss.getSheetByName(GIFTS_SHEET_NAME);
       const timestamp = new Date();
-      const giftId = (payload && payload.giftId) ? payload.giftId : "";
-      const giftName = (payload && payload.giftName) ? payload.giftName : "";
-      const guestName = (payload && payload.guestName) ? payload.guestName : "";
+      const giftId = payload.giftId || "";
+      const giftName = payload.giftName || "";
+      const guestName = payload.guestName || "";
 
       if (!giftId) {
         return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": "giftId missing; reservation not recorded." }))
@@ -80,22 +84,15 @@ function doPost(e) {
     else {
       const sheet = ss.getSheetByName(RSVP_SHEET_NAME);
 
-      let data = e.parameter;
-      if (!data || Object.keys(data).length === 0) {
-        if (e.postData && e.postData.contents) {
-          data = JSON.parse(e.postData.contents);
-        }
-      }
-
-      const timestamp = data.timestamp || new Date();
-      const name = data.name || "";
-      const ceremony = data.ceremonyAttendance || "";
-      const restaurant = data.restaurantAttendance || "";
-      const adults = data.adultsCount || "";
-      const companionNames = data.companionNames || "";
-      const childrenCount = data.childrenCount || "";
-      const childrenNames = data.childrenNames || "";
-      const message = data.message || "";
+      const timestamp = payload.timestamp || new Date();
+      const name = payload.name || "";
+      const ceremony = payload.ceremonyAttendance || "";
+      const restaurant = payload.restaurantAttendance || "";
+      const adults = payload.adultsCount || "";
+      const companionNames = payload.companionNames || "";
+      const childrenCount = payload.childrenCount || "";
+      const childrenNames = payload.childrenNames || "";
+      const message = payload.message || "";
 
       sheet.appendRow([timestamp, name, ceremony, restaurant, adults, companionNames, childrenCount, childrenNames, message]);
 
@@ -124,13 +121,13 @@ function doGet(e) {
       const giftId = row[1];           // Coluna 1: ID do Produto
       const giftName = row[2];         // Coluna 2: Nome do Produto
       const guestName = row[3];        // Coluna 3: Convidado
-      
+
       // Somente adiciona se houver ID (presente foi realmente reservado)
       if (giftId) {
         reservedGifts.push({
-          id: giftId,
-          name: giftName || "Sem nome",
-          reserved_by: guestName || "Não informado"
+          id: String(giftId),
+          name: giftName ? String(giftName) : "Sem nome",
+          reserved_by: guestName ? String(guestName) : "Não informado"
         });
       }
     }

@@ -453,7 +453,8 @@ const fetchReservedGifts = async () => {
   }
 
   try {
-    const response = await fetch(GOOGLE_SCRIPT_URL);
+    const urlWithCacheBuster = `${GOOGLE_SCRIPT_URL}?t=${new Date().getTime()}`;
+    const response = await fetch(urlWithCacheBuster, { cache: 'no-store' });
     const data = await response.json();
     if (data && data.reserved) {
       // A API agora retorna um array de objetos: {id, name, reserved_by}
