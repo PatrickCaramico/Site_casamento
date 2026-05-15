@@ -1,39 +1,40 @@
 import './style.css'
 
 const normalizeEnvUrl = (value: unknown) => {
-    const raw = String(value ?? '').trim();
-    return raw.replace(/^['\"]|['\"]$/g, '').trim();
+  const raw = String(value ?? '').trim();
+  return raw.replace(/^['\"]|['\"]$/g, '').trim();
 };
 
 const GOOGLE_SCRIPT_URL = normalizeEnvUrl(import.meta.env.VITE_GOOGLE_SCRIPT_URL);
+const GOOGLE_SCRIPT_GIFTS_URL = normalizeEnvUrl(import.meta.env.VITE_GOOGLE_SCRIPT_GIFTS_URL || import.meta.env.VITE_GOOGLE_SCRIPT_URL);
 
 // --- Contagem Regressiva ---
 const weddingDate = new Date('June 6, 2026 16:00:00').getTime();
 
 const updateTimer = () => {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
 
-    if (distance < 0) {
-        const timerElement = document.getElementById('timer');
-        if (timerElement) timerElement.innerHTML = "O GRANDE DIA CHEGOU!";
-        return;
-    }
+  if (distance < 0) {
+    const timerElement = document.getElementById('timer');
+    if (timerElement) timerElement.innerHTML = "O GRANDE DIA CHEGOU!";
+    return;
+  }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    const daysEl = document.getElementById('days');
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
 
-    if (daysEl) daysEl.innerText = days.toString().padStart(2, '0');
-    if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
-    if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
-    if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
+  if (daysEl) daysEl.innerText = days.toString().padStart(2, '0');
+  if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
+  if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
+  if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
 };
 
 setInterval(updateTimer, 1000);
@@ -54,72 +55,72 @@ const childrenNamesContainer = document.getElementById('children-names-container
 type AttendanceOption = 'sim' | 'talvez' | 'nao';
 
 type RsvpPayload = {
-    name: string;
-    ceremonyAttendance: AttendanceOption;
-    restaurantAttendance: AttendanceOption;
-    adultsCount: number;
-    companionNames: string[];
-    childrenCount: number;
-    childrenNames: string[];
-    message: string;
-    timestamp: string;
+  name: string;
+  ceremonyAttendance: AttendanceOption;
+  restaurantAttendance: AttendanceOption;
+  adultsCount: number;
+  companionNames: string[];
+  childrenCount: number;
+  childrenNames: string[];
+  message: string;
+  timestamp: string;
 };
 
 const parseBoundedCount = (value: string, min: number, max: number, fallback: number) => {
-    const parsed = Number.parseInt(value, 10);
-    if (!Number.isFinite(parsed)) return fallback;
-    return Math.min(max, Math.max(min, parsed));
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, parsed));
 };
 
 const renderDynamicNameInputs = (
-    container: HTMLDivElement | null,
-    count: number,
-    inputName: string,
-    placeholder: string,
-    idPrefix: string,
+  container: HTMLDivElement | null,
+  count: number,
+  inputName: string,
+  placeholder: string,
+  idPrefix: string,
 ) => {
-    if (!container) return;
+  if (!container) return;
 
-    container.innerHTML = '';
+  container.innerHTML = '';
 
-    if (count <= 0) {
-        container.classList.add('hidden');
-        return;
-    }
+  if (count <= 0) {
+    container.classList.add('hidden');
+    return;
+  }
 
-    container.classList.remove('hidden');
+  container.classList.remove('hidden');
 
-    for (let i = 1; i <= count; i += 1) {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = `${idPrefix}-${i}`;
-        input.name = inputName;
-        input.placeholder = placeholder;
-        input.required = true;
-        input.className = 'dynamic-name-input';
-        container.appendChild(input);
-    }
+  for (let i = 1; i <= count; i += 1) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = `${idPrefix}-${i}`;
+    input.name = inputName;
+    input.placeholder = placeholder;
+    input.required = true;
+    input.className = 'dynamic-name-input';
+    container.appendChild(input);
+  }
 };
 
 const syncGuestNameFields = () => {
-    const adultsCount = parseBoundedCount(adultsCountSelect?.value ?? '1', 1, 10, 1);
-    const childrenCount = parseBoundedCount(childrenCountSelect?.value ?? '0', 0, 10, 0);
+  const adultsCount = parseBoundedCount(adultsCountSelect?.value ?? '1', 1, 10, 1);
+  const childrenCount = parseBoundedCount(childrenCountSelect?.value ?? '0', 0, 10, 0);
 
-    renderDynamicNameInputs(
-        adultCompanionsContainer,
-        Math.max(0, adultsCount - 1),
-        'adultCompanionNames',
-        'Nome completo do acompanhante',
-        'adult-companion-name',
-    );
+  renderDynamicNameInputs(
+    adultCompanionsContainer,
+    Math.max(0, adultsCount - 1),
+    'adultCompanionNames',
+    'Nome completo do acompanhante',
+    'adult-companion-name',
+  );
 
-    renderDynamicNameInputs(
-        childrenNamesContainer,
-        childrenCount,
-        'childNames',
-        'Nome completo da criança',
-        'child-name',
-    );
+  renderDynamicNameInputs(
+    childrenNamesContainer,
+    childrenCount,
+    'childNames',
+    'Nome completo da criança',
+    'child-name',
+  );
 };
 
 adultsCountSelect?.addEventListener('change', syncGuestNameFields);
@@ -127,193 +128,193 @@ childrenCountSelect?.addEventListener('change', syncGuestNameFields);
 syncGuestNameFields();
 
 const updateFormStatus = (message: string, type: 'pending' | 'error') => {
-    if (!formStatus) return;
+  if (!formStatus) return;
 
-    formStatus.classList.remove('hidden', 'pending', 'error');
-    formStatus.classList.add(type);
-    formStatus.innerText = message;
+  formStatus.classList.remove('hidden', 'pending', 'error');
+  formStatus.classList.add(type);
+  formStatus.innerText = message;
 };
 
 const clearFormStatus = () => {
-    if (!formStatus) return;
+  if (!formStatus) return;
 
-    formStatus.classList.add('hidden');
-    formStatus.classList.remove('pending', 'error');
-    formStatus.innerText = '';
+  formStatus.classList.add('hidden');
+  formStatus.classList.remove('pending', 'error');
+  formStatus.innerText = '';
 };
 
 const sendToGoogleSheets = async (payload: RsvpPayload) => {
-    if (!GOOGLE_SCRIPT_URL) {
-        throw new Error('URL do Google Sheets não configurada.');
-    }
+  if (!GOOGLE_SCRIPT_URL) {
+    throw new Error('URL do Google Sheets não configurada.');
+  }
 
-    const params = new URLSearchParams({
-        name: payload.name,
-        ceremonyAttendance: payload.ceremonyAttendance,
-        restaurantAttendance: payload.restaurantAttendance,
-        adultsCount: String(payload.adultsCount),
-        companionNames: payload.companionNames.join(' | '),
-        childrenCount: String(payload.childrenCount),
-        childrenNames: payload.childrenNames.join(' | '),
-        message: payload.message,
-        timestamp: payload.timestamp,
-        source: 'site-casamento',
-    });
+  const params = new URLSearchParams({
+    name: payload.name,
+    ceremonyAttendance: payload.ceremonyAttendance,
+    restaurantAttendance: payload.restaurantAttendance,
+    adultsCount: String(payload.adultsCount),
+    companionNames: payload.companionNames.join(' | '),
+    childrenCount: String(payload.childrenCount),
+    childrenNames: payload.childrenNames.join(' | '),
+    message: payload.message,
+    timestamp: payload.timestamp,
+    source: 'site-casamento',
+  });
 
-    const requestUrl = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
-    const body = JSON.stringify({
-        ...payload,
-        source: 'site-casamento',
-    });
+  const requestUrl = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
+  const body = JSON.stringify({
+    ...payload,
+    source: 'site-casamento',
+  });
 
-    // Envia dados em dois formatos para compatibilidade com diferentes versões do Apps Script.
-    await fetch(requestUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'text/plain;charset=UTF-8',
-        },
-        body,
-    });
+  // Envia dados em dois formatos para compatibilidade com diferentes versões do Apps Script.
+  await fetch(requestUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=UTF-8',
+    },
+    body,
+  });
 };
 
 const resetFormState = () => {
-    if (!rsvpForm) return;
+  if (!rsvpForm) return;
 
-    rsvpForm.reset();
-    syncGuestNameFields();
-    rsvpForm.classList.remove('hidden');
-    clearFormStatus();
+  rsvpForm.reset();
+  syncGuestNameFields();
+  rsvpForm.classList.remove('hidden');
+  clearFormStatus();
 
-    if (formFeedback) {
-        formFeedback.classList.add('hidden');
-    }
+  if (formFeedback) {
+    formFeedback.classList.add('hidden');
+  }
 
-    if (feedbackMessage) {
-        feedbackMessage.innerText = 'Obrigado! Sua confirmação foi enviada com sucesso.';
-    }
+  if (feedbackMessage) {
+    feedbackMessage.innerText = 'Obrigado! Sua confirmação foi enviada com sucesso.';
+  }
 
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'Confirmar Presença';
-    }
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.innerText = 'Confirmar Presença';
+  }
 };
 
 if (rsvpForm) {
-    rsvpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(rsvpForm);
+  rsvpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const name = String(formData.get('name') ?? '').trim();
-        const ceremonyAttendance = String(formData.get('ceremonyAttendance') ?? '').trim() as AttendanceOption;
-        const restaurantAttendance = String(formData.get('restaurantAttendance') ?? '').trim() as AttendanceOption;
-        const adultsCount = parseBoundedCount(String(formData.get('adultsCount') ?? '1'), 1, 10, 1);
-        const childrenCount = parseBoundedCount(String(formData.get('childrenCount') ?? '0'), 0, 10, 0);
-        const companionNames = formData
-            .getAll('adultCompanionNames')
-            .map((value) => String(value).trim())
-            .filter(Boolean);
-        const childrenNames = formData
-            .getAll('childNames')
-            .map((value) => String(value).trim())
-            .filter(Boolean);
-        const message = String(formData.get('message') ?? '').trim();
+    const formData = new FormData(rsvpForm);
 
-        const validAttendanceOptions = ['sim', 'talvez', 'nao'];
-        const expectedCompanionNames = Math.max(0, adultsCount - 1);
+    const name = String(formData.get('name') ?? '').trim();
+    const ceremonyAttendance = String(formData.get('ceremonyAttendance') ?? '').trim() as AttendanceOption;
+    const restaurantAttendance = String(formData.get('restaurantAttendance') ?? '').trim() as AttendanceOption;
+    const adultsCount = parseBoundedCount(String(formData.get('adultsCount') ?? '1'), 1, 10, 1);
+    const childrenCount = parseBoundedCount(String(formData.get('childrenCount') ?? '0'), 0, 10, 0);
+    const companionNames = formData
+      .getAll('adultCompanionNames')
+      .map((value) => String(value).trim())
+      .filter(Boolean);
+    const childrenNames = formData
+      .getAll('childNames')
+      .map((value) => String(value).trim())
+      .filter(Boolean);
+    const message = String(formData.get('message') ?? '').trim();
 
-        if (
-            !name ||
-            !validAttendanceOptions.includes(ceremonyAttendance) ||
-            !validAttendanceOptions.includes(restaurantAttendance)
-        ) {
-            updateFormStatus('Preencha seu nome e selecione a presença na cerimônia e no restaurante.', 'error');
-            return;
-        }
+    const validAttendanceOptions = ['sim', 'talvez', 'nao'];
+    const expectedCompanionNames = Math.max(0, adultsCount - 1);
 
-        if (companionNames.length !== expectedCompanionNames) {
-            updateFormStatus('Preencha o nome de todos os acompanhantes adultos informados.', 'error');
-            return;
-        }
+    if (
+      !name ||
+      !validAttendanceOptions.includes(ceremonyAttendance) ||
+      !validAttendanceOptions.includes(restaurantAttendance)
+    ) {
+      updateFormStatus('Preencha seu nome e selecione a presença na cerimônia e no restaurante.', 'error');
+      return;
+    }
 
-        if (childrenNames.length !== childrenCount) {
-            updateFormStatus('Preencha o nome de todas as crianças informadas.', 'error');
-            return;
-        }
+    if (companionNames.length !== expectedCompanionNames) {
+      updateFormStatus('Preencha o nome de todos os acompanhantes adultos informados.', 'error');
+      return;
+    }
 
-        const data = {
-            name,
-            ceremonyAttendance,
-            restaurantAttendance,
-            adultsCount,
-            companionNames,
-            childrenCount,
-            childrenNames,
-            message,
-            timestamp: new Date().toISOString(),
-        };
-        
-        console.log('Dados do RSVP recebidos:', data);
+    if (childrenNames.length !== childrenCount) {
+      updateFormStatus('Preencha o nome de todas as crianças informadas.', 'error');
+      return;
+    }
 
-        clearFormStatus();
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Enviando...';
-        }
+    const data = {
+      name,
+      ceremonyAttendance,
+      restaurantAttendance,
+      adultsCount,
+      companionNames,
+      childrenCount,
+      childrenNames,
+      message,
+      timestamp: new Date().toISOString(),
+    };
 
-        updateFormStatus('Enviando confirmação...', 'pending');
+    console.log('Dados do RSVP recebidos:', data);
 
-        try {
-            await sendToGoogleSheets(data);
+    clearFormStatus();
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Enviando...';
+    }
 
-            if (feedbackMessage) {
-                const ceremonyText = ceremonyAttendance === 'sim' ? 'cerimônia confirmada' : 'cerimônia não confirmada';
-                const restaurantText = restaurantAttendance === 'sim' ? 'restaurante confirmado' : 'restaurante não confirmado';
-                const guestsText = adultsCount + childrenCount;
+    updateFormStatus('Enviando confirmação...', 'pending');
 
-                feedbackMessage.innerText = `Perfeito! Recebemos sua resposta com ${ceremonyText}, ${restaurantText} e ${guestsText} convidados.`;
-            }
+    try {
+      await sendToGoogleSheets(data);
 
-            rsvpForm.classList.add('hidden');
-            if (formFeedback) {
-                formFeedback.classList.remove('hidden');
-            }
+      if (feedbackMessage) {
+        const ceremonyText = ceremonyAttendance === 'sim' ? 'cerimônia confirmada' : 'cerimônia não confirmada';
+        const restaurantText = restaurantAttendance === 'sim' ? 'restaurante confirmado' : 'restaurante não confirmado';
+        const guestsText = adultsCount + childrenCount;
 
-            clearFormStatus();
-        } catch (error) {
-            console.error('Falha ao enviar para Google Sheets:', error);
-            const isMissingUrl = !GOOGLE_SCRIPT_URL;
-            const errorMessage = isMissingUrl
-                ? 'Integração não configurada no deploy. Defina VITE_GOOGLE_SCRIPT_URL no Netlify e publique novamente.'
-                : 'Não conseguimos enviar para a planilha. Verifique o deploy do Apps Script e se a URL está sem aspas.';
+        feedbackMessage.innerText = `Perfeito! Recebemos sua resposta com ${ceremonyText}, ${restaurantText} e ${guestsText} convidados.`;
+      }
 
-            updateFormStatus(errorMessage, 'error');
+      rsvpForm.classList.add('hidden');
+      if (formFeedback) {
+        formFeedback.classList.remove('hidden');
+      }
 
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Confirmar Presença';
-            }
-        }
-    });
+      clearFormStatus();
+    } catch (error) {
+      console.error('Falha ao enviar para Google Sheets:', error);
+      const isMissingUrl = !GOOGLE_SCRIPT_URL;
+      const errorMessage = isMissingUrl
+        ? 'Integração não configurada no deploy. Defina VITE_GOOGLE_SCRIPT_URL no Netlify e publique novamente.'
+        : 'Não conseguimos enviar para a planilha. Verifique o deploy do Apps Script e se a URL está sem aspas.';
 
-    rsvpForm.addEventListener('reset', () => {
-        window.setTimeout(() => {
-            syncGuestNameFields();
-            clearFormStatus();
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Confirmar Presença';
-            }
-        }, 0);
-    });
+      updateFormStatus(errorMessage, 'error');
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Confirmar Presença';
+      }
+    }
+  });
+
+  rsvpForm.addEventListener('reset', () => {
+    window.setTimeout(() => {
+      syncGuestNameFields();
+      clearFormStatus();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Confirmar Presença';
+      }
+    }, 0);
+  });
 }
 
 if (newResponseBtn) {
-    newResponseBtn.addEventListener('click', () => {
-        resetFormState();
-        rsvpForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  newResponseBtn.addEventListener('click', () => {
+    resetFormState();
+    rsvpForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 // --- Mobile Menu Toggle ---
@@ -322,30 +323,30 @@ const navList = document.getElementById('nav-list');
 const navLinks = document.querySelectorAll('.nav-list a');
 
 if (menuToggle && navList) {
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navList.classList.toggle('active');
-    });
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navList.classList.toggle('active');
+  });
 
-    // Fecha o menu ao clicar em um link
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle.classList.remove('active');
-            navList.classList.remove('active');
-        });
+  // Fecha o menu ao clicar em um link
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navList.classList.remove('active');
     });
+  });
 }
 
 // --- Smooth Scroll and Navbar Style ---
 window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
     }
+  }
 });
 
 // --- Gifts Logic ---
@@ -394,7 +395,7 @@ const renderGifts = () => {
   if (!giftsGrid) return;
 
   giftsGrid.innerHTML = '';
-  
+
   const sortValue = sortSelect?.value || 'az';
   const sortedGifts = [...giftsData].sort((a, b) => {
     if (sortValue === 'az') return a.name.localeCompare(b.name);
@@ -408,15 +409,15 @@ const renderGifts = () => {
     // Verifica se o presente está reservado procurando pelo ID
     const reservedItem = reservedGifts.find(r => r.id === gift.id);
     const isReserved = !!reservedItem;
-    
+
     const card = document.createElement('div');
     card.className = `gift-list-item ${isReserved ? 'unavailable' : ''}`;
-    
+
     // Se o presente está reservado, mostra quem reservou
-    const reservedByText = isReserved && reservedItem?.reserved_by 
-      ? ` • Reservado por: ${reservedItem.reserved_by}` 
+    const reservedByText = isReserved && reservedItem?.reserved_by
+      ? ` • Reservado por: ${reservedItem.reserved_by}`
       : '';
-    
+
     card.innerHTML = `
       <span class="gift-list-name">${gift.name}${reservedByText}</span>
       <button class="btn-gift-list ${isReserved ? 'unavailable' : ''}" 
@@ -426,7 +427,7 @@ const renderGifts = () => {
         ${isReserved ? 'Indisponível' : 'Presentear'}
       </button>
     `;
-    
+
     giftsGrid.appendChild(card);
   });
 
@@ -442,7 +443,7 @@ const renderGifts = () => {
 };
 
 const fetchReservedGifts = async () => {
-  if (!GOOGLE_SCRIPT_URL) {
+  if (!GOOGLE_SCRIPT_GIFTS_URL) {
     if (cartStatus) cartStatus.innerText = "Modo demonstração";
     const localReserved = localStorage.getItem('demo_reserved_gifts');
     if (localReserved) {
@@ -453,7 +454,7 @@ const fetchReservedGifts = async () => {
   }
 
   try {
-    const urlWithCacheBuster = `${GOOGLE_SCRIPT_URL}?t=${new Date().getTime()}`;
+    const urlWithCacheBuster = `${GOOGLE_SCRIPT_GIFTS_URL}?t=${new Date().getTime()}`;
     const response = await fetch(urlWithCacheBuster, { cache: 'no-store' });
     const data = await response.json();
     if (data && data.reserved) {
@@ -461,8 +462,8 @@ const fetchReservedGifts = async () => {
       reservedGifts = data.reserved;
     }
     if (cartStatus) {
-      cartStatus.innerText = reservedGifts.length > 0 
-        ? `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}` 
+      cartStatus.innerText = reservedGifts.length > 0
+        ? `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}`
         : "Nenhum presente reservado ainda";
     }
   } catch (err) {
@@ -475,12 +476,12 @@ const fetchReservedGifts = async () => {
 
 const openGiftModal = (id: string | null, name: string | null) => {
   if (!id || !name || !giftModal || !modalGiftName || !modalGiftId) return;
-  
+
   modalGiftId.value = id;
   modalGiftName.innerText = name;
   giftModal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden'; 
-  
+  document.body.style.overflow = 'hidden';
+
   if (giftFormStatus) {
     giftFormStatus.classList.add('hidden');
     giftFormStatus.innerText = '';
@@ -505,19 +506,19 @@ if (sortSelect) {
 if (giftForm) {
   giftForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData(giftForm);
     const guestName = String(formData.get('guestName') ?? '').trim();
     const giftId = String(formData.get('giftId') ?? '');
     const giftName = modalGiftName?.innerText || '';
-    
+
     if (!guestName || !giftId) return;
 
     if (submitGiftBtn) {
       submitGiftBtn.disabled = true;
       submitGiftBtn.innerText = 'Reservando...';
     }
-    
+
     if (giftFormStatus) {
       giftFormStatus.classList.remove('hidden', 'error');
       giftFormStatus.classList.add('pending');
@@ -525,16 +526,16 @@ if (giftForm) {
     }
 
     try {
-      if (GOOGLE_SCRIPT_URL) {
+      if (GOOGLE_SCRIPT_GIFTS_URL) {
         const params = new URLSearchParams({
           action: 'reserveGift',
           giftId,
           giftName,
           guestName
         });
-        
-        const requestUrl = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
-        
+
+        const requestUrl = `${GOOGLE_SCRIPT_GIFTS_URL}?${params.toString()}`;
+
         await fetch(requestUrl, {
           method: 'POST',
           mode: 'no-cors',
@@ -543,10 +544,10 @@ if (giftForm) {
           },
           body: JSON.stringify({ action: 'reserveGift', giftId, giftName, guestName })
         });
-        
+
         // Aguarda um pouco para o Google Sheets processar a inserção
         await new Promise(r => setTimeout(r, 1500));
-        
+
         // Recarrega os presentes reservados do Google Sheets
         await fetchReservedGifts();
       } else {
@@ -561,7 +562,7 @@ if (giftForm) {
         await new Promise(r => setTimeout(r, 800));
         renderGifts();
       }
-      
+
       if (cartStatus && reservedGifts.length > 0) {
         cartStatus.innerText = `${reservedGifts.length} ${reservedGifts.length === 1 ? 'presente reservado' : 'presentes reservados'}`;
       }
