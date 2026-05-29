@@ -413,10 +413,7 @@ const renderGifts = () => {
     const card = document.createElement('div');
     card.className = `gift-list-item ${isReserved ? 'unavailable' : ''}`;
 
-    // Se o presente está reservado, mostra quem reservou
-    const reservedByText = isReserved && reservedItem?.reserved_by
-      ? ` • Reservado por: ${reservedItem.reserved_by}`
-      : '';
+    const reservedByText = isReserved ? ' • Reservado' : '';
 
     card.innerHTML = `
       <span class="gift-list-name">${gift.name}${reservedByText}</span>
