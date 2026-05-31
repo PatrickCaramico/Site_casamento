@@ -520,16 +520,83 @@ section {
 }
 
 .rsvp-card {
-  background-color: white;
+  background: rgba(255, 255, 255, 0.72);
   padding: 6rem 4rem;
   max-width: 800px;
   margin: 0 auto;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f0f0f0;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 4px;
   position: relative;
   z-index: 2;
   text-align: center;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.rsvp-blurred-layer {
+  position: relative;
+  filter: blur(3px) saturate(0.85);
+  opacity: 0.42;
+  pointer-events: none;
+  user-select: none;
+  transform: scale(1.01);
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.rsvp-blurred-layer * {
+  pointer-events: none;
+}
+
+.rsvp-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  z-index: 3;
+  background: rgba(255, 250, 244, 0.18);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.rsvp-lock-message {
+  width: min(420px, 100%);
+  padding: 1.5rem 1.75rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(191, 168, 153, 0.24);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  color: var(--text-main);
+}
+
+.rsvp-lock-status {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #e18a3a;
+  font-weight: 600;
+}
+
+.rsvp-lock-kicker {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--bg-secondary);
+  font-weight: 600;
+}
+
+.rsvp-lock-message p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+  line-height: 1.35;
 }
 
 .rsvp-intro {
