@@ -386,7 +386,8 @@ const giftsData: Gift[] = [
   { id: 'g9', name: 'Aspirador de pó', price: 400.0, image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80&w=600&auto=format&fit=crop' },
   { id: 'g10', name: 'Sanduicheira', price: 110.0, image: 'https://images.unsplash.com/photo-1536411964265-21d37e6f8510?q=80&w=600&auto=format&fit=crop' },
   { id: 'g11', name: 'Mixer ou processador', price: 220.0, image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?q=80&w=600&auto=format&fit=crop' },
-  { id: 'g12', name: 'Travessas de Vidro/Cerâmica', price: 130.0, image: 'https://images.unsplash.com/photo-1581622558667-3419a8dc5f83?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g12', name: 'Marinex', price: 130.0, image: 'https://images.unsplash.com/photo-1581622558667-3419a8dc5f83?q=80&w=600&auto=format&fit=crop' },
+  { id: 'g13', name: 'Conjunto bowl/tigelas', price: 95.0, image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=600&auto=format&fit=crop' },
 ];
 
 let reservedGifts: ReservedGift[] = [];
