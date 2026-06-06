@@ -9,7 +9,8 @@ const GOOGLE_SCRIPT_URL = normalizeEnvUrl(import.meta.env.VITE_GOOGLE_SCRIPT_URL
 const GOOGLE_SCRIPT_GIFTS_URL = normalizeEnvUrl(import.meta.env.VITE_GOOGLE_SCRIPT_GIFTS_URL || import.meta.env.VITE_GOOGLE_SCRIPT_URL);
 
 // --- Contagem Regressiva ---
-const weddingDate = new Date('June 6, 2026 16:00:00').getTime();
+// Data e hora do casamento (ajustada para início às 18:00 local)
+const weddingDate = new Date('June 6, 2026 18:00:00').getTime();
 
 const updateTimer = () => {
   const now = new Date().getTime();
